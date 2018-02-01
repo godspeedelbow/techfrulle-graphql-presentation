@@ -1,18 +1,22 @@
-const { graphql, buildSchema } = require('graphql');
+const {
+  graphql,
+  GraphQLSchema,
+  GraphQLObjectType,
+  GraphQLString
+} = require("graphql");
 
-const schema = buildSchema(`
-  type Query {
-    hello: String
-  }
-`);
-
-const root = {
-  hello: () => {
-    return 'Hello world!';
-  },
-};
-
-graphql(schema, '{ hello }', root).then((response) => {
-  console.log(response);
+const schema = new GraphQLSchema({
+  query: new GraphQLObjectType({
+    name: "Query",
+    fields: () => ({
+      hello: {
+        type: GraphQLString,
+        resolve: () => "Hello world!"
+      }
+    })
+  })
 });
 
+graphql(schema, "{ hello }").then(response => {
+  console.log(response);
+});

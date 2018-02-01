@@ -1,3 +1,9 @@
+const express = require("express");
+
+const { graphql } = require("graphql");
+const graphqlHTTP = require("express-graphql");
+const cors = require("cors");
+
 const uniq = require("lodash/uniq");
 
 const {
@@ -11,6 +17,8 @@ const {
 
 const {
   events,
+  speakers,
+  talks,
   getTalkById,
   getSpeakerById,
   getEventById,
@@ -20,6 +28,7 @@ const {
 
 const SpeakerType = new GraphQLObjectType({
   name: "speaker",
+  description: "a speaker at a TechFrulle event",
   fields: function() {
     return {
       id: {
@@ -42,6 +51,7 @@ const SpeakerType = new GraphQLObjectType({
 
 const EventType = new GraphQLObjectType({
   name: "event",
+  description: "the monthly TechFrulle event",
   fields: function() {
     return {
       id: {
@@ -68,6 +78,7 @@ const EventType = new GraphQLObjectType({
 
 const TalkType = new GraphQLObjectType({
   name: "talk",
+  description: "a TechFrulle talk",
   fields: function() {
     return {
       id: {
@@ -89,7 +100,8 @@ const TalkType = new GraphQLObjectType({
 });
 
 const queryType = new GraphQLObjectType({
-  name: "TechFrulle",
+  name: "TechFrulleQueries",
+  description: "all queries you can do on the TechFrulle API",
   fields: function() {
     return {
       event: {
@@ -138,6 +150,26 @@ const queryType = new GraphQLObjectType({
   }
 });
 
-module.exports = new GraphQLSchema({
+const schema = new GraphQLSchema({
   query: queryType
+});
+
+let app = express();
+let PORT = 4000;
+
+app.use(cors());
+
+app.use(
+  "/graphql",
+  graphqlHTTP({
+    schema,
+    graphiql: true
+  })
+);
+
+const server = app.listen(PORT, function() {
+  var host = server.address().address;
+  var port = server.address().port;
+
+  console.log("GraphQL listening at http://%s:%s", host, port);
 });

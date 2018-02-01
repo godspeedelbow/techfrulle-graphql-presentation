@@ -1,10 +1,11 @@
 const express = require("express");
-
 const { graphql } = require("graphql");
 const graphqlHTTP = require("express-graphql");
 const cors = require("cors");
 
-const { getSpeakerById, getTalkById } = require("./data");
+const { getSpeakerById } = require("./data");
+
+const PORT = 4000;
 
 const {
   GraphQLSchema,
@@ -15,42 +16,22 @@ const {
   GraphQLNonNull
 } = require("graphql");
 
-const PORT = 3000;
-
 const SpeakerType = new GraphQLObjectType({
   name: "speaker",
-  fields: function() {
-    return {
-      id: {
-        type: GraphQLID
-      },
-      name: {
-        type: GraphQLString
-      }
-    };
-  }
-});
-
-const TalkType = new GraphQLObjectType({
-  name: "talk",
-  fields: function() {
-    return {
-      id: {
-        type: GraphQLID
-      },
-      title: {
-        type: GraphQLString
-      },
-      speaker: {
-        type: SpeakerType,
-        resolve: ({ speaker }) => getSpeakerById(speaker)
-      }
-    };
-  }
+  description: "a speaker at a TechFrulle event",
+  fields: () => ({
+    id: {
+      type: GraphQLID
+    },
+    name: {
+      type: GraphQLString
+    }
+  })
 });
 
 const queryType = new GraphQLObjectType({
-  name: "TechFrulle",
+  name: "TechFrulleQueries",
+  description: "all queries you can do on the TechFrulle API",
   fields: () => ({
     speaker: {
       type: SpeakerType,
@@ -61,16 +42,6 @@ const queryType = new GraphQLObjectType({
         }
       },
       resolve: (root, { id }) => getSpeakerById(id)
-    },
-    talk: {
-      type: TalkType,
-      args: {
-        id: {
-          description: "id of the talk",
-          type: new GraphQLNonNull(GraphQLID)
-        }
-      },
-      resolve: (root, { id }) => getTalkById(id)
     }
   })
 });
@@ -78,6 +49,7 @@ const queryType = new GraphQLObjectType({
 const app = express();
 
 app.use(cors());
+
 app.use(
   "/graphql",
   graphqlHTTP({

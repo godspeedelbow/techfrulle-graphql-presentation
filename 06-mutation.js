@@ -2,15 +2,26 @@ const express = require("express");
 const graphqlHTTP = require("express-graphql");
 const { buildSchema } = require("graphql");
 
-const { GraphQLSchema, GraphQLObjectType, GraphQLString } = require("graphql");
+let counter = 0;
+
+const { GraphQLSchema, GraphQLObjectType, GraphQLInt } = require("graphql");
 
 const schema = new GraphQLSchema({
   query: new GraphQLObjectType({
     name: "Query",
     fields: () => ({
-      hello: {
-        type: GraphQLString,
-        resolve: () => "Hello world!"
+      counter: {
+        type: GraphQLInt,
+        resolve: () => counter
+      }
+    })
+  }),
+  mutation: new GraphQLObjectType({
+    name: "Mutation",
+    fields: () => ({
+      increase: {
+        type: GraphQLInt,
+        resolve: () => counter++
       }
     })
   })
@@ -21,6 +32,7 @@ app.use(
   "/graphql",
   graphqlHTTP({
     schema,
+    // rootValue: root,
     graphiql: true
   })
 );
