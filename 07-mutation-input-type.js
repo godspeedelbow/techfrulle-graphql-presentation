@@ -64,7 +64,7 @@ const SpeakerInputType = new GraphQLInputObjectType({
   name: "speakerInput",
   description: "speaker details",
   fields: () => ({
-    name: { type: GraphQLString }
+    name: { type: new GraphQLNonNull(GraphQLString) }
   })
 });
 
@@ -95,8 +95,8 @@ const TalkInputType = new GraphQLInputObjectType({
   name: "talkInput",
   description: "talk details",
   fields: () => ({
-    title: { type: GraphQLString },
-    speaker: { type: GraphQLInt }
+    title: { type: new GraphQLNonNull(GraphQLString) },
+    speaker: { type: new GraphQLNonNull(GraphQLInt) }
   })
 });
 
@@ -131,8 +131,8 @@ const EventInputType = new GraphQLInputObjectType({
   name: "eventInput",
   description: "event details",
   fields: () => ({
-    date: { type: GraphQLString },
-    talks: { type: new GraphQLList(GraphQLInt) }
+    date: { type: new GraphQLNonNull(GraphQLString) },
+    talks: { type: new GraphQLNonNull(new GraphQLList(new GraphQLNonNull(GraphQLInt))) }
   })
 });
 
@@ -163,7 +163,12 @@ const queryType = new GraphQLObjectType({
             type: new GraphQLNonNull(GraphQLID)
           }
         },
-        resolve: (root, { id }) => getSpeakerById(id)
+        resolve: (root, { id }) => {
+          console.log('*** id', id);
+          const e = getSpeakerById(id);
+          console.log('*** e', e);
+          return e;
+        }
       },
       speakers: {
         type: new GraphQLList(SpeakerType),

@@ -17,6 +17,6 @@ const schema = new GraphQLSchema({
   })
 });
 
-graphql(schema, "{ hello }").then(response => {
+graphql(schema, "query { hello }").then(response => {
   console.log(response);
 });

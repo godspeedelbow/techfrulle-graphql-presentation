@@ -23,7 +23,8 @@ const {
   getSpeakerById,
   getEventById,
   getEventsBySpeaker,
-  getTalksBySpeaker
+  getTalksBySpeaker,
+  getEventByTalk,
 } = require("./data");
 
 const SpeakerType = new GraphQLObjectType({
@@ -93,7 +94,7 @@ const TalkType = new GraphQLObjectType({
       },
       event: {
         type: EventType,
-        resolve: ({ event }) => getEventById(event)
+        resolve: ({ id }) => getEventByTalk(id)
       }
     };
   }
