@@ -15,7 +15,7 @@ const {
   GraphQLNonNull
 } = require("graphql");
 
-const PORT = 4000;
+const PORT = 4004;
 
 const SpeakerType = new GraphQLObjectType({
   name: "speaker",

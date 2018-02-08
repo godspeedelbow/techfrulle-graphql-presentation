@@ -127,18 +127,24 @@ const getTalkById = talkId => talks.find(({ id }) => talkId === id);
 const getSpeakerById = speakerId => speakers.find(({ id }) => speakerId === id);
 const getEventById = eventId => events.find(({ id }) => eventId === id);
 
-const getTalksBySpeaker = speakerId => talks.find(({ speaker }) => speaker === speakerId);
+const getTalksBySpeaker = speakerId => talks.filter(({ speaker }) => speaker === speakerId);
+const getEventsBySpeaker = speakerId => {
+  const _talks = getTalksBySpeaker(speakerId);
+  const _events = _talks.map(({ id }) => getEventByTalk(id));
+  return _events;
+};
 const getTalksByEvent = eventId => {
   const event = events.find(({ id }) => id === eventId);
   const talks = event.talks.map(getTalkById);
   return talks;
 };
-const getEventByTalk = event => events.find(({ talks }) => talks.includes(event));
+const getEventByTalk = talk => events.find(({ talks }) => talks.includes(talk));
 
 module.exports = {
   events,
   speakers,
   talks,
+  getEventsBySpeaker,
   getTalksBySpeaker,
   getTalksByEvent,
   getTalkById,
@@ -172,7 +178,6 @@ module.exports = {
       talks
     };
     events.push(event);
-    console.log("*** events", events);
     return event;
   }
 };

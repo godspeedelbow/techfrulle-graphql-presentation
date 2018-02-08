@@ -5,7 +5,7 @@ const cors = require("cors");
 
 const { getSpeakerById } = require("./data");
 
-const PORT = 4000;
+const PORT = 4003;
 
 const {
   GraphQLSchema,

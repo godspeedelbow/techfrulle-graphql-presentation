@@ -156,7 +156,7 @@ const schema = new GraphQLSchema({
 });
 
 let app = express();
-let PORT = 4000;
+let PORT = 4005;
 
 app.use(cors());
 

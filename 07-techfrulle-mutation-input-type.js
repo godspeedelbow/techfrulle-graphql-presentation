@@ -163,12 +163,7 @@ const queryType = new GraphQLObjectType({
             type: new GraphQLNonNull(GraphQLID)
           }
         },
-        resolve: (root, { id }) => {
-          console.log('*** id', id);
-          const e = getSpeakerById(id);
-          console.log('*** e', e);
-          return e;
-        }
+        resolve: (root, { id }) => getSpeakerById(id)
       },
       speakers: {
         type: new GraphQLList(SpeakerType),
@@ -235,7 +230,7 @@ const schema = new GraphQLSchema({
 });
 
 let app = express();
-let PORT = 4000;
+let PORT = 4007;
 
 app.use(cors());
 
