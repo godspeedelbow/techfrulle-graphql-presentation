@@ -121,23 +121,30 @@ const events = [
   }
 ];
 
-const talksById = keyBy(talks, "id");
-const speakersById = keyBy(speakers, "id");
-const eventsById = keyBy(events, "id");
-
-const talksBySpeaker = groupBy(talks, "speaker");
 const talksByEvent = groupBy(talks, "event");
+
+const getTalkById = talkId => talks.find(({ id }) => talkId === id);
+const getSpeakerById = speakerId => speakers.find(({ id }) => speakerId === id);
+const getEventById = eventId => events.find(({ id }) => eventId === id);
+
+const getTalksBySpeaker = speakerId => talks.find(({ speaker }) => speaker === speakerId);
+const getTalksByEvent = eventId => {
+  const event = events.find(({ id }) => id === eventId);
+  const talks = event.talks.map(getTalkById);
+  return talks;
+};
+const getEventByTalk = event => events.find(({ talks }) => talks.includes(event));
 
 module.exports = {
   events,
   speakers,
   talks,
-  getTalksBySpeaker: speakerId => talksBySpeaker[speakerId],
-  getTalksByEvent: eventId => talksByEvent[eventId],
-  getTalkById: talkId => talks.find(({ id }) => talkId === id),
-  getSpeakerById: speakerId => speakers.find(({ id }) => speakerId === id),
-  getEventById: eventId => events.find(({ id }) => eventId === id),
-  getEventByTalk: event => events.find(({ talks }) => talks.includes(event)),
+  getTalksBySpeaker,
+  getTalksByEvent,
+  getTalkById,
+  getSpeakerById,
+  getEventById,
+  getEventByTalk,
   addSpeaker: ({ name }) => {
     const id = speakers.length.toString();
     const speaker = {

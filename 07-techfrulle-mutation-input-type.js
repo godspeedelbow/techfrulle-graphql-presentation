@@ -96,7 +96,7 @@ const TalkInputType = new GraphQLInputObjectType({
   description: "talk details",
   fields: () => ({
     title: { type: new GraphQLNonNull(GraphQLString) },
-    speaker: { type: new GraphQLNonNull(GraphQLInt) }
+    speaker: { type: new GraphQLNonNull(GraphQLString) }
   })
 });
 
@@ -132,7 +132,7 @@ const EventInputType = new GraphQLInputObjectType({
   description: "event details",
   fields: () => ({
     date: { type: new GraphQLNonNull(GraphQLString) },
-    talks: { type: new GraphQLNonNull(new GraphQLList(new GraphQLNonNull(GraphQLInt))) }
+    talks: { type: new GraphQLNonNull(new GraphQLList(new GraphQLNonNull(GraphQLString))) }
   })
 });
 

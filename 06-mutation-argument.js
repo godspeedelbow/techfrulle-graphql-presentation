@@ -2,7 +2,7 @@ const express = require("express");
 const graphqlHTTP = require("express-graphql");
 const { buildSchema } = require("graphql");
 
-let counter = 0;
+let counter = 42;
 
 const {
   GraphQLSchema,

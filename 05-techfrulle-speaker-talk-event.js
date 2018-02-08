@@ -115,10 +115,6 @@ const queryType = new GraphQLObjectType({
         },
         resolve: (root, { id }) => getEventById(id)
       },
-      events: {
-        type: new GraphQLList(EventType),
-        resolve: () => events
-      },
       speaker: {
         type: SpeakerType,
         args: {
@@ -133,6 +129,14 @@ const queryType = new GraphQLObjectType({
         type: new GraphQLList(SpeakerType),
         resolve: () => speakers
       },
+      talks: {
+        type: new GraphQLList(TalkType),
+        resolve: () => talks
+      },
+      events: {
+        type: new GraphQLList(EventType),
+        resolve: () => events
+      },
       talk: {
         type: TalkType,
         args: {
@@ -143,10 +147,6 @@ const queryType = new GraphQLObjectType({
         },
         resolve: (root, { id }) => getTalkById(id)
       },
-      talks: {
-        type: new GraphQLList(TalkType),
-        resolve: () => talks
-      }
     };
   }
 });
